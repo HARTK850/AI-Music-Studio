@@ -76,6 +76,14 @@ export class UI {
                 return;
             }
 
+            // Important: Start Audio Context immediately on user gesture
+            // This prevents "AudioContext was not allowed to start" error
+            try {
+                await this.audioEngine.init();
+            } catch (e) {
+                console.warn("AudioContext init failed:", e);
+            }
+
             await this.handleGeneration(prompt);
         });
 
