@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Music Studio</title>
+    
+    <!-- Scripts & Styles -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    
+    <!-- Gemini SDK via CDN (Unofficial browser build for testing or direct fetch) -->
+    <!-- We will use direct fetch() calls to avoid complex SDK setups for pure client-side -->
+
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0f172a',
+                        primary: '#00f3ff',
+                        secondary: '#bc13fe',
+                        panel: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-dark text-gray-200 min-h-screen flex flex-col">
+
+    <!-- Header & Visualizer -->
+    <header class="relative w-full bg-panel border-b border-gray-700 z-10">
+        <div class="absolute top-4 left-4 z-20">
+            <h1 class="text-2xl font-bold tracking-tighter">
+                <span class="text-primary neon-text">AI</span> <span class="text-white">Music Studio</span>
+            </h1>
+        </div>
+        
+        <!-- API Key Status Indicator -->
+        <div class="absolute top-4 right-4 z-20 flex items-center gap-2">
+            <div id="api-status-dot" class="w-3 h-3 rounded-full bg-red-500 shadow-md transition-colors duration-300"></div>
+            <button id="settings-btn" class="text-gray-400 hover:text-white transition-colors">
+                <i class="fas fa-cog text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Audio Visualizer Canvas -->
+        <canvas id="visualizer-canvas" class="w-full h-48"></canvas>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto p-4 flex flex-col gap-6 relative z-10">
+        
+        <!-- API Key Modal (Hidden by default unless no key) -->
+        <div id="api-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            <div class="glass-panel p-8 rounded-xl max-w-md w-full relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-secondary"></div>
+                <h2 class="text-2xl font-bold mb-4 text-center">הגדרות Gemini API</h2>
+                <p class="text-gray-400 text-sm mb-6 text-center">
+                    כדי להשתמש במערכת, אנא הזן מפתח API של Google Gemini. המפתח נשמר בדפדפן שלך בלבד.
+                </p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-1">Gemini API Key</label>
+                        <input type="password" id="api-key-input" 
+                               class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-primary transition-colors"
+                               placeholder="AIzaSy...">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-primary hover:underline">קבל מפתח בחינם &rarr;</a>
+                    </div>
+                    <button id="save-api-key" 
+                            class="w-full bg-gradient-to-r from-primary to-blue-600 hover:from-blue-500 hover:to-blue-700 text-black font-bold py-3 rounded-lg shadow-lg transform transition hover:-translate-y-1">
+                        שמור והתחל ליצור
+                    </button>
+                    <p id="api-error-msg" class="text-red-400 text-xs text-center hidden mt-2"></p>
+                </div>
+                
+                <button id="close-modal" class="absolute top-4 left-4 text-gray-500 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <section class="glass-panel rounded-xl p-6 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Prompt Input -->
+                <div class="md:col-span-2 space-y-4">
+                    <label class="block text-lg font-medium text-gray-200">
+                        <i class="fas fa-magic mr-2 text-secondary"></i> תאר את המוזיקה שלך
+                    </label>
+                    <div class="relative">
+                        <textarea id="prompt-input" rows="3" 
+                                  class="w-full bg-gray-900/50 border border-gray-700 rounded-lg p-4 text-white focus:outline-none focus:border-secondary transition-all resize-none"
+                                  placeholder="למשל: מוזיקת סייברפאנק מהירה עם באס כבד, תופים אלקטרוניים וסינתיסייזרים מרחפים..."></textarea>
+                        <button id="generate-btn" 
+                                class="absolute bottom-3 left-3 bg-secondary hover:bg-purple-600 text-white px-6 py-2 rounded-lg text-sm font-bold shadow-lg transition-all flex items-center gap-2">
+                            <span>צור מוזיקה</span>
+                            <i class="fas fa-bolt"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Playback Controls -->
+                <div class="flex flex-col justify-between bg-gray-900/30 rounded-lg p-4 border border-gray-800">
+                    <div class="text-center mb-2">
+                        <span id="track-name" class="text-primary font-mono text-sm block truncate">ממתין ליצירה...</span>
+                        <span id="playback-time" class="text-xs text-gray-500 font-mono">00:00 / 00:00</span>
+                    </div>
+
+                    <div class="flex justify-center items-center gap-4 mb-4">
+                        <button id="stop-btn" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-white transition-colors disabled:opacity-50" disabled>
+                            <i class="fas fa-stop"></i>
+                        </button>
+                        <button id="play-pause-btn" class="w-16 h-16 rounded-full bg-primary hover:bg-cyan-400 text-black flex items-center justify-center shadow-lg shadow-primary/30 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                            <i class="fas fa-play text-2xl ml-1"></i>
+                        </button>
+                        <button id="loop-btn" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center text-gray-400 transition-colors">
+                            <i class="fas fa-repeat"></i>
+                        </button>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button id="download-btn" class="flex-1 bg-gray-800 hover:bg-gray-700 py-2 rounded text-xs font-medium border border-gray-700 transition-colors disabled:opacity-50" disabled>
+                            <i class="fas fa-download mr-1"></i> הורד MP3
+                        </button>
+                        <button id="randomize-btn" class="flex-1 bg-gray-800 hover:bg-gray-700 py-2 rounded text-xs font-medium border border-gray-700 transition-colors disabled:opacity-50" disabled>
+                            <i class="fas fa-random mr-1"></i> גוון
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mixer & Instruments -->
+        <section id="mixer-section" class="glass-panel rounded-xl p-6 hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fas fa-sliders-h text-gray-400"></i> מיקסר כלים
+                </h3>
+                <div class="flex gap-4 text-sm text-gray-400">
+                    <div class="flex items-center gap-2">
+                        <span>Tempo:</span>
+                        <input type="number" id="tempo-input" value="120" min="60" max="200" class="w-16 bg-gray-800 border border-gray-700 rounded px-2 py-1 text-center text-white focus:outline-none focus:border-primary">
+                        <span>BPM</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="instruments-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                <!-- Instruments will be injected here dynamically -->
+            </div>
+        </section>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40 flex flex-col items-center justify-center">
+            <div class="loader mb-4 border-t-primary border-4 w-16 h-16"></div>
+            <h3 class="text-2xl font-bold text-white mb-2">Gemini מלחין...</h3>
+            <p id="loading-text" class="text-gray-300 text-sm animate-pulse">מנתח את הבקשה שלך</p>
+        </div>
+
+    </main>
+
+    <footer class="mt-auto py-6 border-t border-gray-800 text-center text-gray-500 text-sm">
+        <p>Powered by Google Gemini & Tone.js | Created with AI</p>
+    </footer>
+
+    <!-- Application Modules -->
+    <script type="module" src="js/app.js"></script>
+
+</body>
+</html>
