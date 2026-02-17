@@ -574,7 +574,9 @@ async function initiateAIGeneration() {
             })
         });
 
-        const data = await response.json();
+        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content?.parts?.[0]?.text) {
+            throw new Error("תגובה לא תקינה מג'מיני - אין תוכן");
+        }
         let rawText = data.candidates[0].content.parts[0].text;
         
         // ניקוי טקסט וטיפול בשגיאות JSON (FIX)
