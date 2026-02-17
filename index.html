@@ -575,7 +575,7 @@ async function initiateAIGeneration() {
         });
 
         const data = await response.json();
-        let rawText = data.candidates[1].content.parts[1].text;
+        let rawText = data.candidates[0].content.parts[0].text;
         
         // ניקוי טקסט וטיפול בשגיאות JSON (FIX)
         rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
