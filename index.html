@@ -28,842 +28,694 @@
             color: var(--text-main);
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             margin: 0;
+            overflow-x: hidden;
             display: flex;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* סרגל עליון */
+        header {
+            background: rgba(15, 15, 26, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--accent-primary);
+            text-shadow: var(--shadow-neon);
+        }
+
+        .status-bar {
+            display: flex;
+            gap: 20px;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--accent-success);
+        }
+
+        /* פריסה ראשית */
+        main {
+            display: grid;
+            grid-template-columns: 350px 1fr 300px;
+            gap: 1px;
+            background: var(--border);
+            flex: 1;
+        }
+
+        /* פאנלים */
+        .panel {
+            background: var(--bg-surface);
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
-        /* Layout Architecture */
-        .app-shell {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            grid-template-rows: 80px 1fr 200px;
-            width: 100vw;
-            height: 100vh;
-        }
-
-        /* Top Header */
-        header {
-            grid-column: 1 / -1;
-            background: var(--bg-surface);
-            border-bottom: 2px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 40px;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .brand h1 {
-            font-size: 1.8rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-            font-weight: 900;
-        }
-
-        /* Sidebar - Controls */
-        aside {
-            grid-row: 2 / -1;
-            background: var(--bg-surface);
-            border-left: 2px solid var(--border);
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            overflow-y: auto;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.3);
-        }
-
-        .config-card {
+        .panel-header {
+            padding: 1rem;
             background: var(--bg-element);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: var(--shadow-neon);
-        }
-
-        .config-card label {
+            border-bottom: 1px solid var(--border);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
-            font-size: 0.8rem;
-            color: var(--accent-primary);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            font-weight: 800;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            background: #000;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: #fff;
-            padding: 14px;
-            font-size: 0.95rem;
-        }
-
-        input:focus { border-color: var(--accent-primary); box-shadow: 0 0 10px rgba(0, 242, 255, 0.3); }
-
-        .btn {
-            padding: 18px;
-            border: none;
-            border-radius: 14px;
-            font-weight: 900;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            text-transform: uppercase;
+            font-weight: 600;
             font-size: 0.9rem;
+            text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .btn-ai { background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary)); color: #000; }
-        .btn-play { background: var(--accent-success); color: #000; }
-        .btn-stop { background: var(--accent-danger); color: #fff; }
-        .btn-download { background: #fff; color: #000; }
-        
-        .btn:hover:not(:disabled) { transform: translateY(-3px); filter: brightness(1.1); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
-        .btn:active { transform: translateY(0); }
-        .btn:disabled { opacity: 0.2; cursor: not-allowed; filter: grayscale(1); }
-
-        /* Main Workspace */
-        main {
-            grid-row: 2 / 3;
-            background: var(--bg-base);
-            padding: 35px;
+        .panel-content {
+            padding: 1.5rem;
             overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
+            flex: 1;
         }
 
-        /* Studio Monitors */
-        .monitor-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            height: 320px;
+        /* פקדים */
+        .input-group {
+            margin-bottom: 1.5rem;
         }
 
-        .monitor-card {
-            background: #000;
-            border-radius: 24px;
-            border: 2px solid var(--border);
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.05);
-        }
-
-        .monitor-label {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 0.7rem;
-            color: var(--accent-primary);
-            background: rgba(0,0,0,0.8);
-            padding: 6px 12px;
-            border-radius: 6px;
-            z-index: 5;
-            border: 1px solid var(--accent-primary);
-            font-weight: 800;
-        }
-
-        canvas { width: 100%; height: 100%; display: block; }
-
-        /* Mixer Console */
-        .mixer-container {
-            background: var(--bg-element);
-            border-radius: 30px;
-            padding: 30px;
-            border: 1px solid var(--border);
-        }
-
-        .mixer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 20px;
-        }
-
-        .channel-strip {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            background: rgba(0,0,0,0.3);
-            padding: 20px 10px;
-            border-radius: 18px;
-            border: 1px solid var(--border);
-        }
-
-        .vu-meter-container {
-            width: 12px;
-            height: 140px;
-            background: #000;
-            border-radius: 6px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #222;
-        }
-
-        .vu-fill {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 0%;
-            background: linear-gradient(to top, #39ff14 70%, #ffff00 85%, #ff0000 100%);
-            transition: height 0.08s ease-out;
-        }
-
-        .fader {
-            writing-mode: bt-lr; /* Firefox support */
-            -webkit-appearance: slider-vertical;
-            width: 24px;
-            height: 100px;
-            cursor: pointer;
-        }
-
-        .channel-label {
-            font-size: 0.7rem;
-            font-weight: 900;
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
             color: var(--text-dim);
-            text-align: center;
-            text-transform: uppercase;
+            font-weight: bold;
         }
 
-        /* Timeline Section */
-        .timeline-footer {
-            grid-column: 2 / 3;
-            grid-row: 3 / 4;
-            background: var(--bg-surface);
-            border-top: 2px solid var(--border);
-            padding: 25px;
-            overflow-x: auto;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.4);
-        }
-
-        .timeline-track {
-            display: flex;
-            gap: 15px;
-            min-height: 120px;
-            padding: 15px;
-            background: #000;
-            border-radius: 20px;
+        textarea, select, input {
+            width: 100%;
+            background: var(--bg-element);
             border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 0.8rem;
+            font-family: inherit;
         }
 
-        .block {
-            flex-shrink: 0;
-            width: 180px;
+        textarea:focus { border-color: var(--accent-primary); }
+
+        .btn {
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            padding: 1rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: var(--shadow-neon);
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+
+        /* אזור עריכה מרכזי */
+        .editor-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: var(--bg-base);
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* גלגל ויזואלי */
+        .visualizer-container {
+            height: 300px;
+            background: var(--bg-surface);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wave-bar {
+            width: 4px;
+            background: var(--accent-primary);
+            margin: 0 2px;
+            border-radius: 2px;
+            height: 20px;
+        }
+
+        /* רשימת לוגים */
+        #log-container {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.5);
+            padding: 1rem;
+            border-radius: 8px;
+            height: 150px;
+            overflow-y: auto;
+            color: #00ffaa;
+        }
+
+        .log-entry { margin-bottom: 4px; }
+        .log-time { color: var(--text-dim); margin-left: 8px; }
+
+        /* נגן מותאם */
+        .audio-player-ui {
             background: var(--bg-element);
             border-radius: 12px;
-            border: 2px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-            position: relative;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .progress-container {
+            height: 6px;
+            background: var(--border);
+            border-radius: 3px;
+            margin: 1rem 0;
             cursor: pointer;
+            position: relative;
         }
 
-        .block.active {
+        .progress-bar {
+            height: 100%;
+            background: var(--accent-primary);
+            width: 0%;
+            border-radius: 3px;
+        }
+
+        /* הגדרות קול */
+        .voice-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .voice-card {
+            background: var(--bg-element);
+            border: 1px solid var(--border);
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .voice-card.active {
             border-color: var(--accent-primary);
-            background: rgba(0, 242, 255, 0.1);
-            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+            background: rgba(0, 242, 255, 0.05);
         }
 
-        .block-name { font-size: 0.8rem; font-weight: 900; color: var(--accent-primary); margin-bottom: 5px; }
-        .block-info { font-size: 0.65rem; color: var(--text-dim); }
-
-        /* Loading & Status */
+        /* אנימציית טעינה */
         #loader {
             position: fixed;
-            top:0; left:0; width:100%; height:100%;
-            background: rgba(2,2,5,0.98);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(5,5,10,0.9);
+            z-index: 1000;
             display: none;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            z-index: 10000;
+            justify-content: center;
         }
 
-        .loader-spinner {
-            width: 80px; height: 80px;
+        .spinner {
+            width: 60px;
+            height: 60px;
             border: 4px solid var(--border);
             border-top: 4px solid var(--accent-primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 30px;
+            margin-bottom: 1rem;
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        .progress-bar-container {
-            width: 400px;
-            height: 8px;
-            background: #111;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+        /* רספונסיביות */
+        @media (max-width: 1200px) {
+            main { grid-template-columns: 300px 1fr; }
+            .right-panel { display: none; }
         }
 
-        .progress-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            transition: width 0.4s;
+        @media (max-width: 800px) {
+            main { grid-template-columns: 1fr; }
+            header { padding: 1rem; }
+            .editor-zone { padding: 1rem; }
         }
-
-        .log-area {
-            background: #000;
-            color: #0f0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.75rem;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            height: 100px;
-            overflow-y: auto;
-            margin-top: auto;
-        }
-
     </style>
 </head>
 <body>
 
-<div id="loader">
-    <div class="loader-spinner"></div>
-    <div style="font-size: 1.5rem; font-weight: 900; color: var(--accent-primary); margin-bottom: 10px;">ENGINEERING SOUNDWAVES</div>
-    <div class="progress-bar-container">
-        <div class="progress-fill" id="progressFill"></div>
+    <div id="loader">
+        <div class="spinner"></div>
+        <div id="loader-text">מייצר מוזיקה באמצעות AI...</div>
     </div>
-    <p id="loaderText" style="margin-top: 20px; color: var(--text-dim); font-weight: 600;">מנתח נתונים מוזיקליים מ-Gemini AI...</p>
-</div>
 
-<div class="app-shell">
     <header>
-        <div class="brand">
-            <i data-lucide="zap" style="color: var(--accent-primary); fill: var(--accent-primary)"></i>
-            <h1>AI MUSIC BEAST <span style="font-size: 0.7rem; color: var(--text-dim)">v5.2 PRO</span></h1>
+        <div class="logo">
+            <i data-lucide="zap"></i>
+            AI BEAST MASTER
         </div>
-        <div id="playbackInfo" style="font-family: 'Courier New', monospace; color: var(--accent-success); font-size: 1.2rem; font-weight: 900;">
-            00:00:00 | BPM: ---
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-dot"></span>
+                <span>SYSTEM ONLINE</span>
+            </div>
+            <div class="status-item">
+                <i data-lucide="cpu" size="14"></i>
+                <span>GEMINI 2.5 TURBO</span>
+            </div>
         </div>
     </header>
 
-    <aside>
-        <div class="config-card">
-            <label><i data-lucide="key" size="14"></i> מפתח API של Gemini</label>
-            <input type="password" id="apiKey" placeholder="הכנס מפתח לאימות...">
-        </div>
-
-        <div class="config-card">
-            <label><i data-lucide="pen-tool" size="14"></i> סגנון השיר (PROMPT)</label>
-            <textarea id="prompt" rows="5" placeholder="למשל: טראנס פסיכדלי במהירות 145BPM עם קיק עוצמתי, סינתיסייזרים חומציים וכינורות ברקע..."></textarea>
-        </div>
-
-        <div class="config-card">
-            <label><i data-lucide="clock" size="14"></i> אורך השיר</label>
-            <select id="duration">
-                <option value="1">1 דקה (Preview)</option>
-                <option value="3" selected>3 דקות (Standard)</option>
-                <option value="5">5 דקות (Extended)</option>
-            </select>
-        </div>
-
-        <button class="btn btn-ai" id="genBtn" onclick="initiateAIGeneration()">
-            <i data-lucide="cpu"></i> צור שיר מורכב (AI)
-        </button>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-            <button class="btn btn-play" id="playBtn" onclick="togglePlayback()" disabled>
-                <i data-lucide="play"></i> נגן
-            </button>
-            <button class="btn btn-stop" onclick="emergencyStop()">
-                <i data-lucide="square"></i> עצור
-            </button>
-        </div>
-
-        <button class="btn btn-download" id="downloadBtn" onclick="renderHighQualityWav()" disabled>
-            <i data-lucide="download"></i> הורדה מהירה (WAV)
-        </button>
-
-        <div id="statusLog" class="log-area">> המערכת ממתינה למפתח API...</div>
-    </aside>
-
     <main>
-        <div class="monitor-grid">
-            <div class="monitor-card">
-                <span class="monitor-label">FREQUENCY ANALYSIS</span>
-                <canvas id="freqCanvas"></canvas>
+        <!-- פאנל שמאלי: יצירה -->
+        <section class="panel">
+            <div class="panel-header">
+                <span>קונפיגורציית סאונד</span>
+                <i data-lucide="settings-2" size="18"></i>
             </div>
-            <div class="monitor-card">
-                <span class="monitor-label">TIME DOMAIN / OSC</span>
-                <canvas id="waveCanvas"></canvas>
-            </div>
-        </div>
+            <div class="panel-content">
+                <div class="input-group">
+                    <label>טקסט להלחנה / קריינות</label>
+                    <textarea id="prompt" rows="5" placeholder="הכנס כאן את המילים לשיר או את הטקסט לקריינות..."></textarea>
+                </div>
 
-        <div class="mixer-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h3 style="margin:0; font-size: 0.9rem; color: var(--accent-primary);">MIXING DESK - 20 ANALOG CHANNELS</h3>
-                <div style="font-size: 0.7rem; color: var(--text-dim);">MASTER LIMITER ACTIVE</div>
+                <div class="input-group">
+                    <label>סגנון ורגש (Mood)</label>
+                    <select id="mood-select">
+                        <option value="excited">נרגש ואנרגטי</option>
+                        <option value="whisper">לחישה דרמטית</option>
+                        <option value="cheerful">שמח וחיובי</option>
+                        <option value="mysterious">מסתורי ואפל</option>
+                        <option value="heroic">גבורה ואפי</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>בחר דמות / קול</label>
+                    <div class="voice-grid" id="voice-selector">
+                        <div class="voice-card active" data-voice="Zephyr">זפיר (עמוק)</div>
+                        <div class="voice-card" data-voice="Kore">קורה (צלול)</div>
+                        <div class="voice-card" data-voice="Puck">פאק (שובב)</div>
+                        <div class="voice-card" data-voice="Fenrir">פנריר (עוצמתי)</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="generate-btn">
+                    <i data-lucide="music"></i>
+                    צור סאונד עכשיו
+                </button>
             </div>
-            <div class="mixer-grid" id="mixerGrid">
-                <!-- Channels will be injected here -->
+        </section>
+
+        <!-- אזור מרכזי: ויזואליזציה ונגן -->
+        <section class="editor-zone">
+            <div class="visualizer-container" id="visualizer">
+                <!-- הבר-ים ייווצרו ב-JS -->
             </div>
-        </div>
+
+            <div class="audio-player-ui">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; gap: 15px; align-items: center;">
+                        <button class="btn" id="play-btn" style="width: 50px; height: 50px; border-radius: 50%; padding: 0;">
+                            <i data-lucide="play"></i>
+                        </button>
+                        <div>
+                            <div style="font-weight: bold; font-size: 1rem;" id="track-name">שקט...</div>
+                            <div style="font-size: 0.75rem; color: var(--text-dim);" id="track-meta">ממתין לפקודה</div>
+                        </div>
+                    </div>
+                    <div id="time-display" style="font-family: monospace;">00:00 / 00:00</div>
+                </div>
+
+                <div class="progress-container" id="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" id="download-btn" disabled style="background: var(--bg-element); color: var(--text-main); border: 1px solid var(--border);">
+                        <i data-lucide="download"></i>
+                        הורד קובץ WAV
+                    </button>
+                </div>
+            </div>
+
+            <div id="log-container">
+                <div class="log-entry">
+                    <span class="log-time">12:00:00</span> המערכת מוכנה.
+                </div>
+            </div>
+        </section>
+
+        <!-- פאנל ימני: היסטוריה ומדיה -->
+        <section class="panel right-panel">
+            <div class="panel-header">
+                <span>ספריית הקלטות</span>
+                <i data-lucide="folder-kanban" size="18"></i>
+            </div>
+            <div class="panel-content" id="history-list">
+                <div style="text-align: center; color: var(--text-dim); margin-top: 2rem;">
+                    <i data-lucide="inbox" size="48" style="opacity: 0.2;"></i>
+                    <p style="font-size: 0.8rem;">אין הקלטות קודמות</p>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <div class="timeline-footer">
-        <div class="timeline-track" id="timeline">
-            <!-- Arrangement blocks will be injected here -->
-        </div>
-    </div>
-</div>
+    <script>
+        // קבועים ומשתנים גלובליים
+        const apiKey = ""; // API Key ריק כנדרש
+        let currentAudioBuffer = null;
+        let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        let sourceNode = null;
+        let startTime = 0;
+        let pausedAt = 0;
+        let isPlaying = false;
+        let selectedVoice = "Zephyr";
 
-<script>
-/** * AI MUSIC BEAST 5.2 - CORE ENGINE
- * FIXES: Added library checks, robust JSON parsing, and Sample-Accurate Scheduling.
- */
-
-// 1. הכלים המקצועיים של הסטודיו
-const INSTRUMENTS = [
-    { id: 'kick', label: 'Kick', color: '#ff0055', type: 'drum' },
-    { id: 'snare', label: 'Snare', color: '#ff5500', type: 'drum' },
-    { id: 'hihat', label: 'Hi-Hat', color: '#ffaa00', type: 'drum' },
-    { id: 'perc', label: 'Perc', color: '#ffff00', type: 'drum' },
-    { id: 'sub', label: 'Sub', color: '#39ff14', type: 'synth' },
-    { id: 'bass', label: 'Bass', color: '#00ffaa', type: 'synth' },
-    { id: 'acid', label: 'Acid', color: '#00f2ff', type: 'synth' },
-    { id: 'lead1', label: 'Lead A', color: '#00aaff', type: 'synth' },
-    { id: 'lead2', label: 'Lead B', color: '#0055ff', type: 'synth' },
-    { id: 'piano', label: 'Piano', color: '#5500ff', type: 'harmonic' },
-    { id: 'strings', label: 'Strings', color: '#aa00ff', type: 'harmonic' },
-    { id: 'pad', label: 'Pad', color: '#ff00ff', type: 'harmonic' },
-    { id: 'organ', label: 'Organ', color: '#ff00aa', type: 'harmonic' },
-    { id: 'brass', label: 'Brass', color: '#ffffff', type: 'harmonic' },
-    { id: 'guitar', label: 'Guitar', color: '#888888', type: 'harmonic' },
-    { id: 'fx1', label: 'Riser', color: '#444444', type: 'fx' },
-    { id: 'fx2', label: 'Hit', color: '#222222', type: 'fx' },
-    { id: 'noise', label: 'Atmo', color: '#111111', type: 'fx' },
-    { id: 'vocal', label: 'Vox', color: '#004444', type: 'fx' },
-    { id: 'claps', label: 'Claps', color: '#440000', type: 'drum' }
-];
-
-// 2. משתנים גלובליים
-let audioCtx, masterGain, mainAnalyser, waveAnalyser;
-let isPlaying = false;
-let currentBpm = 130;
-let songData = null;
-let currentStep = 0;
-let currentBlock = 0;
-let nextNoteTime = 0;
-let timerID;
-const CHANNELS = {};
-
-// 3. אתחול ראשוני
-window.onload = () => {
-    // בדיקה אם הספרייה נטענה
-    if (typeof lucide !== 'undefined') {
+        // אתחול Lucide
         lucide.createIcons();
-    }
-    
-    const savedKey = localStorage.getItem('beast_api_key_v5');
-    if(savedKey) document.getElementById('apiKey').value = savedKey;
-    
-    createMixerUI();
-    addLog("סטודיו מוכן. מחכה לפקודות AI.");
-};
 
-function createMixerUI() {
-    const grid = document.getElementById('mixerGrid');
-    INSTRUMENTS.forEach(inst => {
-        const strip = document.createElement('div');
-        strip.className = 'channel-strip';
-        strip.innerHTML = `
-            <div class="vu-meter-container"><div id="vu-${inst.id}" class="vu-fill"></div></div>
-            <input type="range" class="fader" id="vol-${inst.id}" min="0" max="1" step="0.01" value="0.7">
-            <div class="channel-label" style="color:${inst.color}">${inst.label}</div>
-        `;
-        grid.appendChild(strip);
-        CHANNELS[inst.id] = { gain: null, analyser: null };
-    });
-}
+        // יצירת ויזואלייזר
+        const visualizer = document.getElementById('visualizer');
+        const barCount = 60;
+        for (let i = 0; i < barCount; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'wave-bar';
+            bar.style.height = (Math.random() * 60 + 10) + 'px';
+            visualizer.appendChild(bar);
+        }
 
-function addLog(msg) {
-    const log = document.getElementById('statusLog');
-    log.innerHTML = `> ${msg}<br>` + log.innerHTML;
-}
+        function animateVisualizer() {
+            if (!isPlaying) return;
+            const bars = document.querySelectorAll('.wave-bar');
+            bars.forEach(bar => {
+                const h = Math.random() * 150 + 20;
+                bar.style.height = h + 'px';
+                bar.style.opacity = (h / 200) + 0.3;
+            });
+            requestAnimationFrame(animateVisualizer);
+        }
 
-// 4. מנוע האודיו
-async function initAudioEngine() {
-    if (audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    masterGain = audioCtx.createGain();
-    const limiter = audioCtx.createDynamicsCompressor();
-    limiter.threshold.setValueAtTime(-1, audioCtx.currentTime);
-    limiter.knee.setValueAtTime(40, audioCtx.currentTime);
-    
-    mainAnalyser = audioCtx.createAnalyser();
-    waveAnalyser = audioCtx.createAnalyser();
-    
-    masterGain.connect(limiter);
-    limiter.connect(mainAnalyser);
-    limiter.connect(waveAnalyser);
-    mainAnalyser.connect(audioCtx.destination);
-
-    INSTRUMENTS.forEach(inst => {
-        const g = audioCtx.createGain();
-        const a = audioCtx.createAnalyser();
-        a.fftSize = 32;
-        g.connect(a);
-        a.connect(masterGain);
-        CHANNELS[inst.id].gain = g;
-        CHANNELS[inst.id].analyser = a;
-    });
-}
-
-// 5. יצירת שיר עם Gemini AI
-async function initiateAIGeneration() {
-    const key = document.getElementById('apiKey').value;
-    const prompt = document.getElementById('prompt').value;
-    if(!key) return alert("נא להזין מפתח API!");
-    
-    localStorage.setItem('beast_api_key_v5', key);
-    document.getElementById('loader').style.display = 'flex';
-    document.getElementById('progressFill').style.width = '20%';
-    addLog("שולח בקשה ל-Gemini AI...");
-
-    const systemPrompt = `You are a world-class Electronic Music Producer. 
-    Return a JSON object for a full song structure.
-    Structure: {
-        "bpm": 128-150,
-        "blocks": [
-            {
-                "name": "Intro/Drop/Outro",
-                "kick": [1,0,0,0,1...], (16 numbers)
-                "bass": [36,0,36,0...], (MIDI notes 24-48, 0=mute)
-                "lead1": [60,62...], (MIDI notes 48-84)
-                ... (include patterns for all 20 channel IDs)
-            }
-        ]
-    }
-    CHANNEL IDs: kick, snare, hihat, perc, sub, bass, acid, lead1, lead2, piano, strings, pad, organ, brass, guitar, fx1, fx2, noise, vocal, claps.
-    Harmonize all MIDI notes to a single scale (e.g. A Minor). Output ONLY raw JSON.`;
-
-    try {
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: `Create a professional ${prompt} song.` }] }],
-                systemInstruction: { parts: [{ text: systemPrompt }] }
-            })
+        // ניהול בחירת קול
+        document.querySelectorAll('.voice-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.voice-card').forEach(c => c.classList.remove('active'));
+                card.classList.add('active');
+                selectedVoice = card.dataset.voice;
+                addLog(`קול נבחר: ${selectedVoice}`);
+            });
         });
 
-        const data = await response.json();
-        let rawText = data.candidates[0].content.parts[0].text;
-        
-        // ניקוי טקסט וטיפול בשגיאות JSON (FIX)
-        rawText = rawText.replace(/```json/g, '').replace(/```/g, '').trim();
-        songData = JSON.parse(rawText);
-        
-        currentBpm = songData.bpm;
-        document.getElementById('progressFill').style.width = '80%';
-        
-        await initAudioEngine();
-        renderTimeline();
-        
-        document.getElementById('playBtn').disabled = false;
-        document.getElementById('downloadBtn').disabled = false;
-        addLog(`השיר הולחן בהצלחה! BPM: ${currentBpm}`);
-    } catch (err) {
-        console.error(err);
-        addLog("שגיאה בניתוח תשובת ה-AI. וודא שהמפתח תקין.");
-    } finally {
-        document.getElementById('progressFill').style.width = '100%';
-        setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
-    }
-}
-
-function renderTimeline() {
-    const tl = document.getElementById('timeline');
-    tl.innerHTML = '';
-    if(!songData || !songData.blocks) return;
-    
-    songData.blocks.forEach((b, i) => {
-        const div = document.createElement('div');
-        div.className = 'block';
-        div.id = `block-${i}`;
-        div.innerHTML = `<div class="block-name">${b.name}</div><div class="block-info">Steps 1-16</div>`;
-        tl.appendChild(div);
-    });
-}
-
-// 6. תזמון מדויק (The Scheduler)
-function scheduler() {
-    while (nextNoteTime < audioCtx.currentTime + 0.1) {
-        playStep(currentBlock, currentStep, nextNoteTime);
-        advanceStep();
-    }
-    timerID = setTimeout(scheduler, 25);
-}
-
-function advanceStep() {
-    const secondsPerStep = 60.0 / currentBpm / 4;
-    nextNoteTime += secondsPerStep;
-    currentStep++;
-    if (currentStep >= 16) {
-        currentStep = 0;
-        currentBlock++;
-        if (currentBlock >= songData.blocks.length) currentBlock = 0;
-        updateUI();
-    }
-}
-
-function playStep(bIdx, sIdx, time) {
-    const block = songData.blocks[bIdx];
-    
-    // Drums
-    if(block.kick[sIdx]) triggerKick(time);
-    if(block.snare && block.snare[sIdx]) triggerSnare(time);
-    if(block.hihat && block.hihat[sIdx]) triggerHihat(time);
-    
-    // Synths & Harmonic
-    INSTRUMENTS.slice(3).forEach(inst => {
-        if(block[inst.id] && block[inst.id][sIdx] > 0) {
-            triggerSynth(inst.id, mToF(block[inst.id][sIdx]), time, 0.2);
+        // הוספת לוג
+        function addLog(msg) {
+            const container = document.getElementById('log-container');
+            const time = new Date().toLocaleTimeString();
+            container.innerHTML += `<div class="log-entry"><span class="log-time">${time}</span> ${msg}</div>`;
+            container.scrollTop = container.scrollHeight;
         }
-    });
 
-    // Clock UI
-    const totalSecs = Math.floor(time);
-    const m = Math.floor(totalSecs / 60).toString().padStart(2,'0');
-    const s = (totalSecs % 60).toString().padStart(2,'0');
-    document.getElementById('playbackInfo').innerText = `${m}:${s}:00 | BPM: ${currentBpm}`;
-}
-
-// 7. סינתיסייזרים פנימיים
-function mToF(m) { return 440 * Math.pow(2, (m - 69) / 12); }
-
-function triggerKick(t) {
-    const osc = audioCtx.createOscillator();
-    const env = audioCtx.createGain();
-    osc.frequency.setValueAtTime(150, t);
-    osc.frequency.exponentialRampToValueAtTime(0.01, t + 0.4);
-    env.gain.setValueAtTime(1.5, t);
-    env.gain.exponentialRampToValueAtTime(0.01, t + 0.4);
-    osc.connect(env); env.connect(CHANNELS.kick.gain);
-    osc.start(t); osc.stop(t + 0.4);
-}
-
-function triggerSnare(t) {
-    const osc = audioCtx.createOscillator();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(200, t);
-    const env = audioCtx.createGain();
-    env.gain.setValueAtTime(0.6, t);
-    env.gain.exponentialRampToValueAtTime(0.01, t + 0.2);
-    osc.connect(env); env.connect(CHANNELS.snare.gain);
-    osc.start(t); osc.stop(t + 0.2);
-}
-
-function triggerHihat(t) {
-    const osc = audioCtx.createOscillator();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(8000, t);
-    const env = audioCtx.createGain();
-    env.gain.setValueAtTime(0.3, t);
-    env.gain.exponentialRampToValueAtTime(0.01, t + 0.05);
-    osc.connect(env); env.connect(CHANNELS.hihat.gain);
-    osc.start(t); osc.stop(t + 0.05);
-}
-
-function triggerSynth(id, freq, t, dur) {
-    const osc = audioCtx.createOscillator();
-    const env = audioCtx.createGain();
-    const inst = INSTRUMENTS.find(i => i.id === id);
-    
-    osc.type = (inst.type === 'synth') ? 'sawtooth' : 'sine';
-    osc.frequency.setValueAtTime(freq, t);
-    env.gain.setValueAtTime(0.4, t);
-    env.gain.exponentialRampToValueAtTime(0.01, t + dur);
-    
-    osc.connect(env);
-    env.connect(CHANNELS[id].gain);
-    osc.start(t); osc.stop(t + dur);
-}
-
-// 8. ויזואליזציה (Visualizers)
-function draw() {
-    if(!isPlaying) return;
-    requestAnimationFrame(draw);
-
-    // Spectrum
-    const fC = document.getElementById('freqCanvas');
-    const fCtx = fC.getContext('2d');
-    fC.width = fC.offsetWidth; fC.height = fC.offsetHeight;
-    const fData = new Uint8Array(mainAnalyser.frequencyBinCount);
-    mainAnalyser.getByteFrequencyData(fData);
-    fCtx.fillStyle = '#000'; fCtx.fillRect(0,0,fC.width,fC.height);
-    for(let i=0; i<fData.length; i++) {
-        const h = (fData[i]/255) * fC.height;
-        fCtx.fillStyle = `hsl(${i*1.5}, 100%, 50%)`;
-        fCtx.fillRect(i*2, fC.height-h, 1, h);
-    }
-
-    // Oscilloscope
-    const wC = document.getElementById('waveCanvas');
-    const wCtx = wC.getContext('2d');
-    wC.width = wC.offsetWidth; wC.height = wC.offsetHeight;
-    const wData = new Uint8Array(waveAnalyser.fftSize);
-    waveAnalyser.getByteTimeDomainData(wData);
-    wCtx.fillStyle = '#000'; wCtx.fillRect(0,0,wC.width,wC.height);
-    wCtx.strokeStyle = '#00f2ff'; wCtx.lineWidth = 2;
-    wCtx.beginPath();
-    let x = 0; let slice = wC.width/wData.length;
-    for(let i=0; i<wData.length; i++) {
-        let v = wData[i]/128.0; let y = v * wC.height/2;
-        if(i===0) wCtx.moveTo(x,y); else wCtx.lineTo(x,y);
-        x += slice;
-    }
-    wCtx.stroke();
-
-    // Mixer Meters
-    INSTRUMENTS.forEach(inst => {
-        const d = new Uint8Array(1);
-        CHANNELS[inst.id].analyser.getByteFrequencyData(d);
-        document.getElementById(`vu-${inst.id}`).style.height = `${(d[0]/255)*100}%`;
-        const vol = document.getElementById(`vol-${inst.id}`).value;
-        CHANNELS[inst.id].gain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.05);
-    });
-}
-
-// 9. שליטה בנגינה
-function togglePlayback() {
-    if(isPlaying) {
-        isPlaying = false;
-        clearTimeout(timerID);
-        audioCtx.suspend();
-        addLog("נגינה מושהית.");
-    } else {
-        isPlaying = true;
-        audioCtx.resume();
-        nextNoteTime = audioCtx.currentTime;
-        scheduler();
-        draw();
-        addLog("נגינה פעילה.");
-    }
-}
-
-function updateUI() {
-    document.querySelectorAll('.block').forEach(b => b.classList.remove('active'));
-    const current = document.getElementById(`block-${currentBlock}`);
-    if(current) current.classList.add('active');
-}
-
-function emergencyStop() {
-    location.reload();
-}
-
-// 10. רינדור אופליין והורדה (WAV)
-async function renderHighQualityWav() {
-    if(!songData) return;
-    
-    document.getElementById('loader').style.display = 'flex';
-    document.getElementById('loaderText').innerText = "מבצע רינדור אופליין (High Quality)...";
-    
-    const sampleRate = 44100;
-    const songDuration = songData.blocks.length * (60/currentBpm) * 4;
-    const offCtx = new OfflineAudioContext(2, sampleRate * songDuration, sampleRate);
-    
-    const offMaster = offCtx.createGain();
-    offMaster.connect(offCtx.destination);
-    
-    let time = 0;
-    const stepT = 60 / currentBpm / 4;
-
-    songData.blocks.forEach(block => {
-        for(let s=0; s<16; s++) {
-            // Kick Offline
-            if(block.kick[s]) {
-                const o = offCtx.createOscillator();
-                const e = offCtx.createGain();
-                o.frequency.setValueAtTime(150, time);
-                o.frequency.exponentialRampToValueAtTime(0.01, time + 0.4);
-                e.gain.setValueAtTime(1, time);
-                e.gain.exponentialRampToValueAtTime(0.01, time + 0.4);
-                o.connect(e); e.connect(offMaster);
-                o.start(time); o.stop(time + 0.4);
+        // פונקציית יצירת סאונד (API)
+        async function generateSound() {
+            const prompt = document.getElementById('prompt').value.trim();
+            const mood = document.getElementById('mood-select').value;
+            
+            if (!prompt) {
+                addLog("שגיאה: נא להזין טקסט ליצירה");
+                return;
             }
-            // All other instruments (Simplified logic for export)
-            INSTRUMENTS.slice(3).forEach(inst => {
-                if(block[inst.id] && block[inst.id][s] > 0) {
-                    const o = offCtx.createOscillator();
-                    const e = offCtx.createGain();
-                    o.frequency.setValueAtTime(mToF(block[inst.id][s]), time);
-                    e.gain.setValueAtTime(0.3, time);
-                    e.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-                    o.connect(e); e.connect(offMaster);
-                    o.start(time); o.stop(time + 0.2);
+
+            document.getElementById('loader').style.display = 'flex';
+            addLog("מתחבר לשרתי Gemini AI...");
+
+            const systemPrompt = `You are a high-quality music and speech engine.
+            The user wants the following text spoken or sung with a ${mood} emotion.
+            Available voice: ${selectedVoice}.
+            Ensure clarity and professional studio quality.`;
+
+            const fullPrompt = `Say in a ${mood} tone: ${prompt}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: fullPrompt }] }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: {
+                        voiceConfig: {
+                            prebuiltVoiceConfig: {
+                                voiceName: selectedVoice
+                            }
+                        }
+                    }
+                },
+                model: "gemini-2.5-flash-preview-tts"
+            };
+
+            let retries = 5;
+            let delay = 1000;
+
+            while (retries > 0) {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) throw new Error("API Connection Failed");
+
+                    const data = await response.json();
+                    const base64Audio = data.candidates[0].content.parts[0].inlineData.data;
+                    const mimeType = data.candidates[0].content.parts[0].inlineData.mimeType;
+                    const sampleRate = parseInt(mimeType.match(/sampleRate=(\d+)/)?.[1] || "24000");
+
+                    const audioData = base64ToUint8Array(base64Audio);
+                    currentAudioBuffer = await decodePCM(audioData, sampleRate);
+                    
+                    setupPlayer();
+                    addLog("הסאונד נוצר בהצלחה!");
+                    document.getElementById('loader').style.display = 'none';
+                    return;
+
+                } catch (err) {
+                    retries--;
+                    if (retries === 0) {
+                        document.getElementById('loader').style.display = 'none';
+                        addLog("שגיאה קריטית: לא ניתן ליצור סאונד כרגע.");
+                        return;
+                    }
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
                 }
-            });
-            time += stepT;
+            }
         }
-    });
 
-    const buffer = await offCtx.startRendering();
-    const wavBlob = bufferToWav(buffer);
-    const url = URL.createObjectURL(wavBlob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `AI_BEAST_MASTER_${Date.now()}.wav`;
-    a.click();
-    
-    document.getElementById('loader').style.display = 'none';
-    addLog("קובץ WAV מוכן להורדה!");
-}
-
-function bufferToWav(abuffer) {
-    let numOfChan = abuffer.numberOfChannels,
-        length = abuffer.length * numOfChan * 2 + 44,
-        buffer = new ArrayBuffer(length),
-        view = new DataView(buffer),
-        channels = [], i, sample,
-        offset = 0, pos = 0;
-
-    setUint32(0x46464952); setUint32(length - 8); setUint32(0x45564157);
-    setUint32(0x20746d66); setUint32(16); setUint16(1); setUint16(numOfChan);
-    setUint32(abuffer.sampleRate); setUint32(abuffer.sampleRate * 2 * numOfChan);
-    setUint16(numOfChan * 2); setUint16(16); setUint32(0x61746164); setUint32(length - pos - 4);
-
-    for(i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
-    while(pos < abuffer.length) {
-        for(i = 0; i < numOfChan; i++) {
-            sample = Math.max(-1, Math.min(1, channels[i][pos]));
-            sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
-            view.setInt16(offset, sample, true); offset += 2;
+        function base64ToUint8Array(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
         }
-        pos++;
-    }
-    return new Blob([buffer], {type: "audio/wav"});
-    function setUint16(data) { view.setUint16(offset, data, true); offset += 2; }
-    function setUint32(data) { view.setUint32(offset, data, true); offset += 4; }
-}
 
-</script>
+        async function decodePCM(buffer, sampleRate) {
+            const pcmData = new Int16Array(buffer);
+            const audioBuffer = audioContext.createBuffer(1, pcmData.length, sampleRate);
+            const channelData = audioBuffer.getChannelData(0);
+            for (let i = 0; i < pcmData.length; i++) {
+                channelData[i] = pcmData[i] / 32768;
+            }
+            return audioBuffer;
+        }
+
+        function setupPlayer() {
+            document.getElementById('track-name').innerText = "AI Generated Track";
+            document.getElementById('track-meta').innerText = `${selectedVoice} | ${document.getElementById('mood-select').value}`;
+            document.getElementById('download-btn').disabled = false;
+            
+            const duration = currentAudioBuffer.duration;
+            const mins = Math.floor(duration / 60);
+            const secs = Math.floor(duration % 60);
+            document.getElementById('time-display').innerText = `00:00 / ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+            
+            // הוספה להיסטוריה
+            addToHistory();
+        }
+
+        function togglePlay() {
+            if (!currentAudioBuffer) return;
+
+            if (isPlaying) {
+                sourceNode.stop();
+                pausedAt = audioContext.currentTime - startTime;
+                isPlaying = false;
+                document.getElementById('play-btn').innerHTML = '<i data-lucide="play"></i>';
+                lucide.createIcons();
+            } else {
+                sourceNode = audioContext.createBufferSource();
+                sourceNode.buffer = currentAudioBuffer;
+                sourceNode.connect(audioContext.destination);
+                
+                const offset = pausedAt % currentAudioBuffer.duration;
+                sourceNode.start(0, offset);
+                startTime = audioContext.currentTime - offset;
+                isPlaying = true;
+                document.getElementById('play-btn').innerHTML = '<i data-lucide="pause"></i>';
+                lucide.createIcons();
+                animateVisualizer();
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            if (!isPlaying) return;
+            const elapsed = audioContext.currentTime - startTime;
+            const duration = currentAudioBuffer.duration;
+            const pct = (elapsed / duration) * 100;
+            
+            document.getElementById('progress-bar').style.width = Math.min(pct, 100) + '%';
+            
+            const m = Math.floor(elapsed / 60);
+            const s = Math.floor(elapsed % 60);
+            const dm = Math.floor(duration / 60);
+            const ds = Math.floor(duration % 60);
+            document.getElementById('time-display').innerText = 
+                `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')} / ${dm.toString().padStart(2,'0')}:${ds.toString().padStart(2,'0')}`;
+
+            if (elapsed >= duration) {
+                isPlaying = false;
+                pausedAt = 0;
+                document.getElementById('play-btn').innerHTML = '<i data-lucide="play"></i>';
+                lucide.createIcons();
+            } else {
+                requestAnimationFrame(updateProgress);
+            }
+        }
+
+        function addToHistory() {
+            const list = document.getElementById('history-list');
+            if (list.querySelector('p')) list.innerHTML = '';
+            
+            const item = document.createElement('div');
+            item.style.cssText = "background: var(--bg-element); border: 1px solid var(--border); padding: 10px; border-radius: 8px; margin-bottom: 10px; cursor: pointer;";
+            item.innerHTML = `
+                <div style="font-size: 0.85rem; font-weight: bold;">הקלטה #${list.children.length + 1}</div>
+                <div style="font-size: 0.7rem; color: var(--text-dim);">${new Date().toLocaleTimeString()}</div>
+            `;
+            list.prepend(item);
+        }
+
+        // המרה ל-WAV לצורך הורדה
+        function downloadWav() {
+            if (!currentAudioBuffer) return;
+            
+            document.getElementById('loader').style.display = 'flex';
+            document.getElementById('loader-text').innerText = "מעבד קובץ להורדה...";
+            
+            setTimeout(() => {
+                const wavBuffer = bufferToWav(currentAudioBuffer);
+                const blob = new Blob([wavBuffer], { type: 'audio/wav' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `AI_BEAST_MASTER_${Date.now()}.wav`;
+                a.click();
+                
+                document.getElementById('loader').style.display = 'none';
+                addLog("קובץ WAV מוכן להורדה!");
+            }, 500);
+        }
+
+        function bufferToWav(abuffer) {
+            let numOfChan = abuffer.numberOfChannels,
+                length = abuffer.length * numOfChan * 2 + 44,
+                buffer = new ArrayBuffer(length),
+                view = new DataView(buffer),
+                channels = [], i, sample,
+                offset = 0, pos = 0;
+
+            function setUint16(data) { view.setUint16(pos, data, true); pos += 2; }
+            function setUint32(data) { view.setUint32(pos, data, true); pos += 4; }
+
+            setUint32(0x46464952); // "RIFF"
+            setUint32(length - 8);
+            setUint32(0x45564157); // "WAVE"
+            setUint32(0x20746d66); // "fmt "
+            setUint32(16);
+            setUint16(1); // PCM
+            setUint16(numOfChan);
+            setUint32(abuffer.sampleRate);
+            setUint32(abuffer.sampleRate * 2 * numOfChan);
+            setUint16(numOfChan * 2);
+            setUint16(16);
+            setUint32(0x61746164); // "data"
+            setUint32(length - pos - 4);
+
+            for(i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
+
+            while(pos < length) {
+                for(i = 0; i < numOfChan; i++) {
+                    sample = Math.max(-1, Math.min(1, channels[i][offset]));
+                    sample = (sample < 0 ? sample * 0x8000 : sample * 0x7FFF);
+                    view.setInt16(pos, sample, true);
+                    pos += 2;
+                }
+                offset++;
+            }
+            return buffer;
+        }
+
+        // מאזיני אירועים
+        document.getElementById('generate-btn').addEventListener('click', generateSound);
+        document.getElementById('play-btn').addEventListener('click', togglePlay);
+        document.getElementById('download-btn').addEventListener('click', downloadWav);
+
+        // אתחול הקונטקסט בלחיצה ראשונה (דרישת דפדפן)
+        window.addEventListener('mousedown', () => {
+            if (audioContext.state === 'suspended') audioContext.resume();
+        }, { once: true });
+
+        // פונקציונליות הקפצה של הברים בויזואליזציה בטעינה ראשונית
+        setInterval(() => {
+            if (!isPlaying) {
+                const bars = document.querySelectorAll('.wave-bar');
+                bars.forEach(bar => {
+                    bar.style.height = (Math.random() * 30 + 10) + 'px';
+                });
+            }
+        }, 1500);
+
+    </script>
 </body>
 </html>
