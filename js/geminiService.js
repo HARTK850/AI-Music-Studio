@@ -6,7 +6,8 @@
 export class GeminiService {
     constructor() {
         this.apiKey = localStorage.getItem('gemini_api_key') || '';
-        this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+        // Updated to use the faster and more reliable gemini-1.5-flash model
+        this.baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
     }
 
     setApiKey(key) {
@@ -109,16 +110,25 @@ export class GeminiService {
                 throw new Error('Gemini returned an empty response.');
             }
 
-            // Cleanup potential Markdown code blocks if Gemini ignores instructions
-            generatedText = generatedText.replace(/```json/g, '').replace(/```/g, '').trim();
+            // Improved cleaning logic for Gemini 1.5 Flash output
+            // 1. Remove Markdown code blocks (```json ... ```)
+            // 2. Find the first '{' and last '}' to extract the JSON object
+            let cleanText = generatedText.replace(/```json/g, '').replace(/```/g, '');
+            
+            const firstBrace = cleanText.indexOf('{');
+            const lastBrace = cleanText.lastIndexOf('}');
+            
+            if (firstBrace !== -1 && lastBrace !== -1) {
+                cleanText = cleanText.substring(firstBrace, lastBrace + 1);
+            }
 
             // Parse JSON
             try {
-                const musicData = JSON.parse(generatedText);
+                const musicData = JSON.parse(cleanText);
                 return musicData;
             } catch (parseError) {
-                console.error("Failed to parse JSON:", generatedText);
-                throw new Error('Gemini generated invalid JSON. Please try again.');
+                console.error("Failed to parse JSON:", cleanText);
+                throw new Error('Gemini generated invalid JSON. Please try again with a different prompt.');
             }
 
         } catch (error) {
