@@ -594,7 +594,13 @@ async function initiateAIGeneration() {
         addLog(`השיר הולחן בהצלחה! BPM: ${currentBpm}`);
     } catch (err) {
         console.error(err);
-        addLog("שגיאה בניתוח תשובת ה-AI. וודא שהמפתח תקין.");
+        if (err.message.includes('429') || err.message.includes('Too Many Requests')) {
+            addLog("שגיאה 429: יותר מדי בקשות ל-Gemini. חכה 1-2 דקות ונסה שוב.");
+        } else if (typeof data === 'undefined') {
+            addLog("שגיאה: תגובה ריקה או לא תקינה מהשרת. בדוק מפתח API / חיבור.");
+        } else {
+            addLog("שגיאה כללית: " + err.message);
+        }
     } finally {
         document.getElementById('progressFill').style.width = '100%';
         setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
