@@ -638,7 +638,7 @@ function draw() {
     const wData = new Uint8Array(mainAnalyser.fftSize);
     mainAnalyser.getByteTimeDomainData(wData);
     wCtx.fillStyle = '#000'; wCtx.fillRect(0,0,wC.width,wC.height);
-    wCtx.strokeStyle = var('--neon-blue'); wCtx.lineWidth = 2;
+    wCtx.strokeStyle = ('--neon-blue'); wCtx.lineWidth = 2;
     wCtx.beginPath();
     let x = 0; let slice = wC.width / wData.length;
     for(let i=0; i<wData.length; i++) {
