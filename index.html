@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI MUSIC BEAST - אולפן הפקה אולטרה פרו</title>
-    <!-- ייבוא אייקונים וספריות עיצוב -->
+    <title>AI MUSIC BEAST - אולפן הפקה אולטרה פרו V6.0</title>
+    <!-- טעינת ספריות חיצוניות לעיצוב ואייקונים -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /**
-         * מערכת עיצוב: AI MUSIC BEAST PROFESSIONAL
-         * גרסה: 5.8
-         * שפה: עברית (RTL)
+         * מערכת עיצוב מתקדמת - BEAST STUDIO 6.0
+         * מותאם אישית למפיקי מוזיקה מקצועיים
          */
         :root {
             --bg-base: #020205;
@@ -24,31 +23,28 @@
             --text-main: #f0f0f5;
             --text-dim: #9494a5;
             --border: #1e1e35;
-            --border-glow: rgba(0, 242, 255, 0.15);
             --shadow-neon: 0 0 25px rgba(0, 242, 255, 0.15);
-            --transition-speed: 0.25s;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* אתחול סגנונות גלובלי */
         * { 
             box-sizing: border-box; 
             outline: none; 
-            transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1); 
+            transition: all var(--transition); 
             user-select: none;
         }
         
         body {
             background: var(--bg-base);
             color: var(--text-main);
-            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             margin: 0;
             display: flex;
             height: 100vh;
             overflow: hidden;
-            letter-spacing: -0.01em;
         }
 
-        /* ארכיטקטורת פריסה (Layout) */
+        /* מבנה האפליקציה */
         .app-shell {
             display: grid;
             grid-template-columns: 380px 1fr;
@@ -58,7 +54,7 @@
             background: radial-gradient(circle at 50% 50%, #0a0a1f 0%, #020205 100%);
         }
 
-        /* כותרת עליונה */
+        /* סרגל עליון */
         header {
             grid-column: 1 / -1;
             background: rgba(10, 10, 20, 0.9);
@@ -78,10 +74,10 @@
         }
 
         .brand-logo {
-            width: 32px;
-            height: 32px;
+            width: 35px;
+            height: 35px;
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -89,14 +85,11 @@
         }
 
         .brand h1 {
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: linear-gradient(90deg, #fff, var(--accent-primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
             margin: 0;
-            font-weight: 800;
+            font-weight: 900;
+            color: #fff;
         }
 
         .engine-status {
@@ -118,7 +111,7 @@
 
         .status-pill.active { border-color: var(--accent-success); color: var(--accent-success); }
 
-        /* תפריט בקרה צדדי */
+        /* פאנל שליטה צדדי */
         aside {
             grid-row: 2 / -1;
             background: var(--bg-surface);
@@ -128,17 +121,6 @@
             flex-direction: column;
             gap: 20px;
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--border) transparent;
-        }
-
-        .config-section-title {
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 5px;
-            font-weight: 800;
         }
 
         .config-card {
@@ -146,15 +128,10 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 18px;
-            position: relative;
         }
 
-        .config-card:hover { border-color: var(--accent-primary); box-shadow: var(--shadow-neon); }
-
         .config-card label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            display: block;
             font-size: 0.8rem;
             color: var(--accent-primary);
             margin-bottom: 12px;
@@ -167,7 +144,7 @@
             align-items: center;
         }
 
-        input, textarea, select {
+        input, textarea {
             width: 100%;
             background: rgba(0,0,0,0.4);
             border: 1px solid var(--border);
@@ -175,24 +152,8 @@
             color: #fff;
             padding: 12px 15px;
             font-size: 0.9rem;
-            font-family: inherit;
         }
 
-        input:focus, textarea:focus { border-color: var(--accent-primary); background: rgba(0,0,0,0.6); }
-
-        .toggle-password {
-            position: absolute;
-            left: 10px;
-            background: none;
-            border: none;
-            color: var(--text-dim);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* כפתורים ואינטראקציה */
         .btn {
             padding: 16px;
             border: none;
@@ -204,20 +165,14 @@
             justify-content: center;
             gap: 10px;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn-ai { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: #000; box-shadow: 0 4px 15px rgba(0, 242, 255, 0.3); }
+        .btn-ai { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: #000; }
         .btn-play { background: var(--accent-success); color: #000; }
         .btn-stop { background: var(--accent-danger); color: #fff; }
-        .btn-download { background: #fff; color: #000; }
-        
-        .btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn:disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(1); }
+        .btn-master { background: #fff; color: #000; }
 
-        /* סביבת העבודה הראשית */
+        /* אזור עבודה ראשי */
         main {
             grid-row: 2 / 3;
             padding: 30px;
@@ -239,23 +194,18 @@
             border-radius: 20px;
             border: 1px solid var(--border);
             position: relative;
-            overflow: hidden;
         }
 
         .monitor-label {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 0.65rem;
+            top: 10px;
+            left: 10px;
+            font-size: 0.6rem;
             color: var(--accent-primary);
-            background: rgba(0,0,0,0.7);
-            padding: 4px 10px;
+            background: rgba(0,0,0,0.6);
+            padding: 4px 8px;
             border-radius: 4px;
-            border: 1px solid rgba(0, 242, 255, 0.3);
-            font-weight: 800;
         }
-
-        canvas { width: 100%; height: 100%; display: block; }
 
         /* מיקסר */
         .mixer-board {
@@ -263,12 +213,11 @@
             border-radius: 24px;
             padding: 25px;
             border: 1px solid var(--border);
-            flex-grow: 1;
         }
 
         .mixer-channels {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
@@ -284,13 +233,12 @@
         }
 
         .v-meter {
-            width: 8px;
+            width: 10px;
             height: 120px;
             background: #080808;
-            border-radius: 4px;
+            border-radius: 5px;
             position: relative;
             overflow: hidden;
-            border: 1px solid #1a1a1a;
         }
 
         .v-fill {
@@ -298,27 +246,18 @@
             bottom: 0;
             width: 100%;
             height: 0%;
-            background: linear-gradient(to top, #00ff00, #ffff00, #ff0000);
-            box-shadow: 0 0 10px rgba(0,255,0,0.5);
+            background: linear-gradient(to top, #39ff14, #ffcc00, #ff0055);
         }
 
-        .fader-vertical {
+        .fader {
             writing-mode: bt-lr; 
             -webkit-appearance: slider-vertical;
             width: 20px;
             height: 80px;
             margin: 10px 0;
-            cursor: pointer;
         }
 
-        .strip-label {
-            font-size: 0.6rem;
-            font-weight: 900;
-            color: var(--text-dim);
-            text-transform: uppercase;
-        }
-
-        /* ציר הזמן */
+        /* ציר זמן */
         .timeline-area {
             grid-column: 2 / 3;
             grid-row: 3 / 4;
@@ -330,44 +269,36 @@
             align-items: center;
         }
 
-        .track-wrapper {
-            display: flex;
-            gap: 12px;
-            padding: 10px;
-            background: #05050a;
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            min-width: 100%;
-        }
-
         .pattern-block {
-            min-width: 160px;
+            min-width: 180px;
+            height: 80px;
             background: var(--bg-element);
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            cursor: pointer;
+            border-radius: 12px;
+            margin: 0 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
             position: relative;
         }
 
         .pattern-block.active {
             border-color: var(--accent-primary);
             background: rgba(0, 242, 255, 0.05);
-            box-shadow: inset 0 0 15px rgba(0, 242, 255, 0.1);
         }
 
-        /* לוג קונסול */
+        /* לוגר מערכת */
         .terminal-log {
             background: #000;
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 12px;
             height: 120px;
             padding: 12px;
-            font-family: 'Consolas', monospace;
+            font-family: monospace;
             font-size: 0.75rem;
             color: #00ffaa;
             overflow-y: auto;
-            margin-top: auto;
         }
 
         /* מסך טעינה */
@@ -375,365 +306,273 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(2,2,8,0.98);
-            z-index: 99999;
+            z-index: 10000;
             display: none;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
+            justify-content: center;
         }
 
-        .scanner-line {
+        .loader-bar {
             width: 300px;
-            height: 2px;
-            background: var(--accent-primary);
-            box-shadow: 0 0 20px var(--accent-primary);
-            animation: scan 2s ease-in-out infinite;
-            margin: 20px 0;
+            height: 4px;
+            background: #111;
+            margin-top: 20px;
+            border-radius: 2px;
+            overflow: hidden;
         }
 
-        @keyframes scan {
-            0%, 100% { transform: translateY(0); opacity: 0; }
-            50% { transform: translateY(100px); opacity: 1; }
+        .loader-fill {
+            width: 0%;
+            height: 100%;
+            background: var(--accent-primary);
+            transition: width 0.4s;
         }
     </style>
 </head>
 <body>
 
 <div id="loadingOverlay">
-    <div class="brand-logo" style="width: 60px; height: 60px; margin-bottom: 20px;">
-        <i data-lucide="cpu" style="width: 35px; height: 35px; color: #000;"></i>
+    <div class="brand-logo" style="width: 70px; height: 70px; margin-bottom: 25px;">
+        <i data-lucide="cpu" style="width: 40px; height: 40px; color: #000;"></i>
     </div>
-    <div style="font-size: 1.2rem; font-weight: 900; color: #fff;">מעבד נתונים מוזיקליים...</div>
-    <div class="scanner-line"></div>
-    <div id="loadStepText" style="color: var(--accent-primary); font-size: 0.8rem; font-weight: 700;">מפעיל רשת נוירונים...</div>
-    <div style="width: 300px; height: 4px; background: #111; margin-top: 15px; border-radius: 2px; overflow: hidden;">
-        <div id="loadFill" style="width: 0%; height: 100%; background: var(--accent-primary); transition: width 0.3s;"></div>
-    </div>
+    <div style="font-size: 1.1rem; font-weight: 800;" id="loadText">מעבד קומפוזיציה בינה מלאכותית...</div>
+    <div class="loader-bar"><div class="loader-fill" id="loadFill"></div></div>
 </div>
 
 <div class="app-shell">
     <header>
         <div class="brand">
-            <div class="brand-logo">
-                <i data-lucide="music" size="18" color="#000"></i>
-            </div>
-            <h1>BEAST STUDIO <span style="font-size: 0.6rem; opacity: 0.5;">אולטרה פרו V5.8</span></h1>
+            <div class="brand-logo"><i data-lucide="music" size="18" color="#000"></i></div>
+            <h1>BEAST STUDIO <span style="font-size: 0.7rem; opacity: 0.5;">ULTRA 6.0</span></h1>
         </div>
-
         <div class="engine-status">
-            <div class="status-pill active">
-                <i data-lucide="activity" size="14"></i> מנוע מוכן
-            </div>
-            <div id="timeDisplay" style="font-family: monospace; font-size: 1.1rem; color: var(--accent-success); font-weight: 800;">
-                00:00:00
-            </div>
+            <div class="status-pill active"><i data-lucide="zap" size="14"></i> מנוע מופעל</div>
+            <div id="clockDisplay" style="font-family: monospace; font-size: 1.2rem; color: var(--accent-success);">00:00:00</div>
         </div>
     </header>
 
     <aside>
-        <section>
-            <div class="config-section-title">אבטחה והרשאות</div>
-            <div class="config-card">
-                <label><i data-lucide="shield-check" size="14"></i> מפתח Gemini API</label>
-                <div class="input-group">
-                    <input type="password" id="apiKey" placeholder="הכנס מפתח לאימות...">
-                    <button class="toggle-password" onclick="toggleApiMask()" title="הצג/הסתר">
-                        <i id="maskIcon" data-lucide="eye"></i>
-                    </button>
-                </div>
+        <section class="config-card">
+            <label>גישה למערכת (API Key)</label>
+            <div class="input-group">
+                <input type="password" id="apiKey" placeholder="הכנס מפתח Gemini...">
             </div>
         </section>
 
-        <section>
-            <div class="config-section-title">הנחיות הפקה</div>
-            <div class="config-card">
-                <label><i data-lucide="sparkles" size="14"></i> תיאור סגנון (AI Prompt)</label>
-                <textarea id="prompt" rows="4" placeholder="תאר את האווירה, הכלים והקצב..."></textarea>
-            </div>
+        <section class="config-card">
+            <label>הנחיה מוזיקלית (Prompt)</label>
+            <textarea id="promptInput" rows="4" placeholder="תאר את השיר: סגנון, כלים, אווירה..."></textarea>
         </section>
 
-        <section style="display: flex; flex-direction: column; gap: 10px;">
-            <button class="btn btn-ai" id="generateBtn" onclick="runAIGeneration()">
-                <i data-lucide="zap"></i> סנתז יצירה חדשה
-            </button>
-            
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+            <button class="btn btn-ai" id="genBtn" onclick="generateTrack()"><i data-lucide="sparkles"></i> סנתז שיר</button>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                <button class="btn btn-play" id="playBtn" onclick="toggleAudio()" disabled>
-                    <i data-lucide="play" id="playIcon"></i> נגן
-                </button>
-                <button class="btn btn-stop" onclick="killEngine()">
-                    <i data-lucide="power"></i> איפוס
-                </button>
+                <button class="btn btn-play" id="playBtn" onclick="togglePlayback()" disabled><i data-lucide="play" id="playIcon"></i> נגן</button>
+                <button class="btn btn-stop" onclick="location.reload()"><i data-lucide="refresh-cw"></i> איפוס</button>
             </div>
-
-            <button class="btn btn-download" id="masterBtn" onclick="exportMasterWav()" disabled>
-                <i data-lucide="file-audio"></i> ייצוא מאסטר (WAV)
-            </button>
-        </section>
+            <button class="btn btn-master" id="exportBtn" onclick="exportMaster()" disabled><i data-lucide="download"></i> ייצוא מאסטר</button>
+        </div>
 
         <div id="consoleLog" class="terminal-log">
-            [מערכת] מנוע האולפן הופעל.<br>
-            [מערכת] ממתין להגדרות API...
+            [SYS] המערכת מוכנה לעבודה.<br>
+            [SYS] ממתין להזנת מפתח API...
         </div>
     </aside>
 
     <main>
         <div class="visualizer-container">
             <div class="monitor">
-                <span class="monitor-label">ספקטרוגרמה</span>
-                <canvas id="spectroCanvas"></canvas>
+                <span class="monitor-label">תדרים (Spectrum)</span>
+                <canvas id="specCanvas"></canvas>
             </div>
             <div class="monitor">
-                <span class="monitor-label">מנתח פאזה</span>
-                <canvas id="phaseCanvas"></canvas>
+                <span class="monitor-label">פאזה (Waveform)</span>
+                <canvas id="waveCanvas"></canvas>
             </div>
         </div>
 
         <div class="mixer-board">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="margin: 0; font-size: 0.8rem; letter-spacing: 1px; color: var(--text-dim);">מיקסר וירטואלי</h3>
-                <div style="font-size: 0.6rem; color: var(--accent-warning);">הגנת Peak פעילה</div>
-            </div>
+            <h3 style="margin:0 0 15px 0; font-size: 0.8rem; opacity: 0.6;">מיקסר ערוצים</h3>
             <div class="mixer-channels" id="mixerBox"></div>
         </div>
     </main>
 
-    <footer class="timeline-area">
-        <div class="track-wrapper" id="sequencerTrack">
-            <!-- בלוקים דינמיים ייווצרו כאן -->
-        </div>
+    <footer class="timeline-area" id="timeline">
+        <!-- בלוקים דינמיים של השיר -->
     </footer>
 </div>
 
 <script>
 /**
- * AI MUSIC BEAST 5.8 - ליבת עיבוד האודיו
- * פתרון שגיאות: תיקון כתיבת קבצי WAV וסנכרון OfflineContext
+ * BEAST STUDIO 6.0 - ליבת האודיו וניהול ה-API
+ * מנוע הסנתוז והייצוא החדש
  */
 
-const INSTRUMENT_MAP = [
-    { id: 'kick', name: 'Kick', color: '#ff2d55', group: 'Drums' },
-    { id: 'snare', name: 'Snare', color: '#ff9500', group: 'Drums' },
-    { id: 'hihat', name: 'H-Hat', color: '#ffcc00', group: 'Drums' },
-    { id: 'clap', name: 'Clap', color: '#ffcc00', group: 'Drums' },
-    { id: 'bass', name: 'Bass', color: '#34c759', group: 'Low' },
-    { id: 'sub', name: 'Sub', color: '#30d158', group: 'Low' },
-    { id: 'lead1', name: 'Lead A', color: '#007aff', group: 'Melody' },
-    { id: 'lead2', name: 'Lead B', color: '#5856d6', group: 'Melody' },
-    { id: 'chord', name: 'Chords', color: '#af52de', group: 'Harmony' },
-    { id: 'pad', name: 'Pad', color: '#ff3b30', group: 'Harmony' },
-    { id: 'fx1', name: 'Impact', color: '#8e8e93', group: 'FX' },
-    { id: 'fx2', name: 'Riser', color: '#636366', group: 'FX' }
+const INST_CONFIG = [
+    { id: 'kick', name: 'KICK', color: '#ff0055' },
+    { id: 'snare', name: 'SNARE', color: '#ffcc00' },
+    { id: 'hihat', name: 'HI-HAT', color: '#00f2ff' },
+    { id: 'bass', name: 'BASS', color: '#39ff14' },
+    { id: 'lead', name: 'LEAD', color: '#7000ff' },
+    { id: 'pad', name: 'PAD', color: '#ff9500' }
 ];
 
-// מצב המערכת
-let audioCtx, masterBus, mainAnalyser, phaseAnalyser;
+let audioCtx, masterBus, analyser, waveformAnalyser;
 let isPlaying = false;
-let currentSong = null;
-let currentBpm = 128;
-let stepIndex = 0;
-let blockIndex = 0;
-let nextStepTime = 0;
-let schedulerInterval;
-const channels = {};
+let currentSongData = null;
+let currentBpm = 120;
+let step = 0;
+let block = 0;
+let nextTime = 0;
+let timerId;
+const channelGains = {};
 
-// אתחול
-window.addEventListener('load', () => {
+// אתחול הממשק
+window.onload = () => {
     lucide.createIcons();
-    const saved = localStorage.getItem('beast_api_key_v5');
-    if(saved) document.getElementById('apiKey').value = saved;
-    buildMixer();
-});
-
-function toggleApiMask() {
-    const input = document.getElementById('apiKey');
-    const icon = document.getElementById('maskIcon');
-    if (input.type === 'password') {
-        input.type = 'text';
-        icon.setAttribute('data-lucide', 'eye-off');
-    } else {
-        input.type = 'password';
-        icon.setAttribute('data-lucide', 'eye');
-    }
-    lucide.createIcons();
-}
-
-function buildMixer() {
     const box = document.getElementById('mixerBox');
-    INSTRUMENT_MAP.forEach(inst => {
+    INST_CONFIG.forEach(inst => {
         const strip = document.createElement('div');
         strip.className = 'strip';
         strip.innerHTML = `
             <div class="v-meter"><div id="vu-${inst.id}" class="v-fill"></div></div>
-            <input type="range" class="fader-vertical" id="vol-${inst.id}" min="0" max="1" step="0.01" value="0.75">
-            <div class="strip-label" style="color: ${inst.color}">${inst.name}</div>
+            <input type="range" class="fader" id="vol-${inst.id}" min="0" max="1" step="0.01" value="0.7">
+            <div style="font-size:0.6rem; font-weight:900; color:${inst.color}">${inst.name}</div>
         `;
         box.appendChild(strip);
-        channels[inst.id] = { gain: null, analyser: null };
     });
-}
+};
 
-function logToConsole(msg) {
+function addLog(msg) {
     const log = document.getElementById('consoleLog');
-    const time = new Date().toLocaleTimeString();
-    log.innerHTML = `[${time}] ${msg}<br>` + log.innerHTML;
+    log.innerHTML = `[${new Date().toLocaleTimeString()}] ${msg}<br>${log.innerHTML}`;
 }
 
 async function initAudio() {
     if (audioCtx) return;
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
-    // ניתוב גלובלי
     masterBus = audioCtx.createGain();
+    
+    // קומפרסור הגנה
     const limiter = audioCtx.createDynamicsCompressor();
     limiter.threshold.setValueAtTime(-1.0, audioCtx.currentTime);
-    limiter.knee.setValueAtTime(40, audioCtx.currentTime);
-    limiter.ratio.setValueAtTime(12, audioCtx.currentTime);
-    
-    mainAnalyser = audioCtx.createAnalyser();
-    mainAnalyser.fftSize = 256;
-    phaseAnalyser = audioCtx.createAnalyser();
-    phaseAnalyser.fftSize = 2048;
-
+    limiter.connect(audioCtx.destination);
     masterBus.connect(limiter);
-    limiter.connect(mainAnalyser);
-    limiter.connect(phaseAnalyser);
-    phaseAnalyser.connect(audioCtx.destination);
 
-    // ניתוב ערוצים
-    INSTRUMENT_MAP.forEach(inst => {
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    waveformAnalyser = audioCtx.createAnalyser();
+    waveformAnalyser.fftSize = 2048;
+    masterBus.connect(analyser);
+    masterBus.connect(waveformAnalyser);
+
+    INST_CONFIG.forEach(inst => {
         const g = audioCtx.createGain();
-        const a = audioCtx.createAnalyser();
-        a.fftSize = 32;
-        g.connect(a);
-        a.connect(masterBus);
-        channels[inst.id].gain = g;
-        channels[inst.id].analyser = a;
+        g.connect(masterBus);
+        channelGains[inst.id] = g;
     });
 }
 
-async function runAIGeneration() {
+async function generateTrack() {
     const key = document.getElementById('apiKey').value;
-    const userPrompt = document.getElementById('prompt').value || "Techno";
-    if(!key) return alert("נדרש מפתח API לסנתוז.");
+    const prompt = document.getElementById('promptInput').value || "Techno Track";
+    if(!key) return alert("נא להזין מפתח API");
 
-    localStorage.setItem('beast_api_key_v5', key);
     const overlay = document.getElementById('loadingOverlay');
     const fill = document.getElementById('loadFill');
-    const text = document.getElementById('loadStepText');
-    
     overlay.style.display = 'flex';
-    fill.style.width = '10%';
-    text.innerText = "יוצר קשר עם מוח ה-Gemini...";
-    logToConsole("שולח בקשת הלחנה למערכת...");
+    fill.style.width = '20%';
 
-    const sysInstruction = `Electronic Music Producer. Create JSON: {
-        "bpm": 120-150,
-        "structure": [
-            { "name": "פתיח", "kick": [1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0], "hihat": [0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0] },
-            { "name": "דרופ", "kick": [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1], "bass": [36,36,36,36,36,36,36,36,36,36,36,36,36,36,36,36] }
-        ]
-    } Channels: kick, snare, hihat, clap, bass, sub, lead1, lead2, chord, pad, fx1, fx2. MIDI notes.`;
+    const sysPrompt = `You are a music AI. Output ONLY JSON. 
+    Format: {"bpm": 128, "structure": [{"name": "Intro", "kick": [1,0,0,0,1,0,0,0], "bass": [36,0,36,0,36,0,36,0]}]}. 
+    Instruments: kick, snare, hihat, bass, lead, pad. Steps: 16 per block. Notes in MIDI.`;
 
     try {
         const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${key}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                contents: [{ parts: [{ text: `Compose a professional ${userPrompt} song structure in JSON.` }] }],
-                systemInstruction: { parts: [{ text: sysInstruction }] }
+                contents: [{ parts: [{ text: `Create a professional ${prompt} in JSON.` }] }],
+                systemInstruction: { parts: [{ text: sysPrompt }] }
             })
         });
 
-        const data = await res.json();
-        if (!data.candidates || !data.candidates[0]) throw new Error("מפתח API לא תקין או מכסה נגמרה.");
+        const jsonRes = await res.json();
+        fill.style.width = '70%';
         
-        fill.style.width = '60%';
-        text.innerText = "מפענח וקטורים מוזיקליים...";
-        
-        let raw = data.candidates[0].content.parts[0].text;
-        raw = raw.replace(/```json/g, '').replace(/```/g, '').trim();
-        currentSong = JSON.parse(raw);
-        currentBpm = currentSong.bpm;
-        
-        fill.style.width = '90%';
+        let rawJson = jsonRes.candidates[0].content.parts[0].text;
+        rawJson = rawJson.replace(/```json/g, '').replace(/```/g, '').trim();
+        currentSongData = JSON.parse(rawJson);
+        currentBpm = currentSongData.bpm;
+
         await initAudio();
         renderTimeline();
-        
         document.getElementById('playBtn').disabled = false;
-        document.getElementById('masterBtn').disabled = false;
-        logToConsole(`ההלחנה הושלמה. BPM: ${currentBpm}`);
+        document.getElementById('exportBtn').disabled = false;
+        addLog(`השיר נוצר בהצלחה! BPM: ${currentBpm}`);
     } catch (e) {
-        logToConsole(`שגיאת מנוע: ${e.message}`);
-        alert(`סנתוז נכשל: ${e.message}`);
+        addLog(`שגיאת API: ${e.message}`);
+        alert("תקלה בתקשורת עם ה-AI");
     } finally {
         fill.style.width = '100%';
-        setTimeout(() => overlay.style.display = 'none', 600);
+        setTimeout(() => overlay.style.display = 'none', 500);
     }
 }
 
 function renderTimeline() {
-    const track = document.getElementById('sequencerTrack');
-    track.innerHTML = '';
-    currentSong.structure.forEach((blk, i) => {
+    const tl = document.getElementById('timeline');
+    tl.innerHTML = '';
+    currentSongData.structure.forEach((b, i) => {
         const div = document.createElement('div');
         div.className = 'pattern-block';
-        div.id = `block-${i}`;
-        div.innerHTML = `<div style="font-weight:900; color:var(--accent-primary); font-size:0.75rem;">${blk.name}</div><div style="font-size:0.6rem; opacity:0.6;">16 פעימות</div>`;
-        track.appendChild(div);
+        div.id = `blk-${i}`;
+        div.innerHTML = `<span style="color:var(--accent-primary); font-weight:800">${b.name}</span><br><small>16 Steps</small>`;
+        tl.appendChild(div);
     });
 }
 
-function audioLoop() {
-    while (nextStepTime < audioCtx.currentTime + 0.1) {
-        processStep(blockIndex, stepIndex, nextStepTime);
-        advanceStep();
-    }
-    schedulerInterval = setTimeout(audioLoop, 25);
-}
-
-function advanceStep() {
-    const stepDuration = 60.0 / currentBpm / 4;
-    nextStepTime += stepDuration;
-    stepIndex++;
-    if (stepIndex >= 16) {
-        stepIndex = 0;
-        blockIndex++;
-        if (blockIndex >= currentSong.structure.length) blockIndex = 0;
-        updateUI();
-    }
-}
-
-function processStep(bI, sI, time) {
-    const block = currentSong.structure[bI];
-    
-    // לוגיקת תופים
-    if(block.kick && block.kick[sI]) triggerDrum('kick', 150, 0.4, time, audioCtx, channels['kick'].gain);
-    if(block.snare && block.snare[sI]) triggerDrum('snare', 400, 0.2, time, audioCtx, channels['snare'].gain);
-    if(block.hihat && block.hihat[sI]) triggerDrum('hihat', 8000, 0.05, time, audioCtx, channels['hihat'].gain);
-    if(block.clap && block.clap[sI]) triggerDrum('clap', 600, 0.15, time, audioCtx, channels['clap'].gain);
-
-    // לוגיקת סינתיסייזר
-    INSTRUMENT_MAP.slice(4).forEach(inst => {
-        if(block[inst.id] && block[inst.id][sI] > 0) {
-            triggerSynth(inst.id, midiToFreq(block[inst.id][sI]), time, 0.3, audioCtx, channels[inst.id].gain);
+function playLoop() {
+    while (nextTime < audioCtx.currentTime + 0.1) {
+        scheduleStep(block, step, nextTime);
+        const stepLen = 60 / currentBpm / 4;
+        nextTime += stepLen;
+        step++;
+        if (step >= 16) {
+            step = 0;
+            block++;
+            if (block >= currentSongData.structure.length) block = 0;
+            updateUI();
         }
-    });
-
-    const total = Math.floor(time);
-    const m = Math.floor(total / 60).toString().padStart(2,'0');
-    const s = (total % 60).toString().padStart(2,'0');
-    document.getElementById('timeDisplay').innerText = `${m}:${s}:${sI.toString().padStart(2,'0')}`;
+    }
+    timerId = setTimeout(playLoop, 25);
 }
 
-function midiToFreq(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+function scheduleStep(bIdx, sIdx, time) {
+    const data = currentSongData.structure[bIdx];
+    
+    // Drum Synthesis
+    if(data.kick && data.kick[sIdx]) triggerDrum('kick', 120, 0.4, time, audioCtx, channelGains['kick']);
+    if(data.snare && data.snare[sIdx]) triggerDrum('snare', 400, 0.2, time, audioCtx, channelGains['snare']);
+    if(data.hihat && data.hihat[sIdx]) triggerDrum('hihat', 8000, 0.05, time, audioCtx, channelGains['hihat']);
 
-function triggerDrum(id, freq, dur, t, ctx, dest) {
+    // Tone Synthesis
+    if(data.bass && data.bass[sIdx]) triggerSynth('bass', m2f(data.bass[sIdx]), 0.4, time, audioCtx, channelGains['bass']);
+    if(data.lead && data.lead[sIdx]) triggerSynth('lead', m2f(data.lead[sIdx]), 0.3, time, audioCtx, channelGains['lead']);
+
+    // Clock Display
+    const totalSec = Math.floor(time);
+    const m = Math.floor(totalSec/60).toString().padStart(2,'0');
+    const s = (totalSec%60).toString().padStart(2,'0');
+    document.getElementById('clockDisplay').innerText = `${m}:${s}:${sIdx.toString().padStart(2,'0')}`;
+}
+
+function m2f(m) { return 440 * Math.pow(2, (m - 69) / 12); }
+
+function triggerDrum(type, freq, dur, t, ctx, dest) {
     const osc = ctx.createOscillator();
     const env = ctx.createGain();
-    const startFreq = (id === 'hihat') ? freq : freq * 1.5;
-    osc.frequency.setValueAtTime(startFreq, t);
+    osc.frequency.setValueAtTime(freq, t);
     osc.frequency.exponentialRampToValueAtTime(0.01, t + dur);
     env.gain.setValueAtTime(1.0, t);
     env.gain.exponentialRampToValueAtTime(0.01, t + dur);
@@ -741,174 +580,160 @@ function triggerDrum(id, freq, dur, t, ctx, dest) {
     osc.start(t); osc.stop(t + dur);
 }
 
-function triggerSynth(id, freq, t, dur, ctx, dest) {
+function triggerSynth(type, freq, dur, t, ctx, dest) {
     const osc = ctx.createOscillator();
     const env = ctx.createGain();
-    osc.type = (id === 'bass' || id === 'sub') ? 'sine' : 'sawtooth';
+    osc.type = (type === 'bass') ? 'triangle' : 'sawtooth';
     osc.frequency.setValueAtTime(freq, t);
-    env.gain.setValueAtTime(0.4, t);
+    env.gain.setValueAtTime(0.3, t);
     env.gain.exponentialRampToValueAtTime(0.01, t + dur);
     osc.connect(env); env.connect(dest);
     osc.start(t); osc.stop(t + dur);
 }
 
-function visualLoop() {
+function drawVisuals() {
     if(!isPlaying) return;
-    requestAnimationFrame(visualLoop);
-    
-    // ספקטרוגרמה
-    const sC = document.getElementById('spectroCanvas');
-    const sCtx = sC.getContext('2d');
-    sC.width = sC.offsetWidth; sC.height = sC.offsetHeight;
-    const fData = new Uint8Array(mainAnalyser.frequencyBinCount);
-    mainAnalyser.getByteFrequencyData(fData);
-    sCtx.fillStyle = '#000'; sCtx.fillRect(0,0,sC.width,sC.height);
-    const barW = sC.width / fData.length;
-    fData.forEach((val, i) => {
-        const h = (val / 255) * sC.height;
-        sCtx.fillStyle = `hsl(${i*2}, 100%, 50%)`;
-        sCtx.fillRect(i * barW, sC.height - h, barW - 1, h);
-    });
+    requestAnimationFrame(drawVisuals);
 
-    // פאזה / אוסילוסקופ
-    const pC = document.getElementById('phaseCanvas');
-    const pCtx = pC.getContext('2d');
-    pC.width = pC.offsetWidth; pC.height = pC.offsetHeight;
-    const pData = new Uint8Array(phaseAnalyser.fftSize);
-    phaseAnalyser.getByteTimeDomainData(pData);
-    pCtx.fillStyle = '#000'; pCtx.fillRect(0,0,pC.width,pC.height);
-    pCtx.strokeStyle = '#39ff14'; pCtx.lineWidth = 2;
-    pCtx.beginPath();
-    let x = 0; let slice = pC.width / pData.length;
-    pData.forEach((val, i) => {
-        let v = val / 128.0; let y = v * pC.height / 2;
-        if(i === 0) pCtx.moveTo(x, y); else pCtx.lineTo(x, y);
-        x += slice;
+    // Spectrum
+    const sc = document.getElementById('specCanvas');
+    const sctx = sc.getContext('2d');
+    sc.width = sc.offsetWidth; sc.height = sc.offsetHeight;
+    const fData = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(fData);
+    sctx.fillStyle = '#000'; sctx.fillRect(0,0,sc.width,sc.height);
+    fData.forEach((v, i) => {
+        const barH = (v/255) * sc.height;
+        sctx.fillStyle = `hsl(${i*2}, 100%, 50%)`;
+        sctx.fillRect(i * (sc.width/fData.length), sc.height - barH, 2, barH);
     });
-    pCtx.stroke();
 
     // VU Meters
-    INSTRUMENT_MAP.forEach(inst => {
-        const d = new Uint8Array(1);
-        channels[inst.id].analyser.getByteFrequencyData(d);
-        document.getElementById(`vu-${inst.id}`).style.height = `${(d[0]/255)*100}%`;
-        const userVol = document.getElementById(`vol-${inst.id}`).value;
-        channels[inst.id].gain.gain.setTargetAtTime(userVol, audioCtx.currentTime, 0.05);
+    INST_CONFIG.forEach(inst => {
+        const vol = document.getElementById(`vol-${inst.id}`).value;
+        channelGains[inst.id].gain.setTargetAtTime(vol, audioCtx.currentTime, 0.05);
+        document.getElementById(`vu-${inst.id}`).style.height = `${vol * 100}%`;
     });
 }
 
-function toggleAudio() {
-    const btn = document.getElementById('playIcon');
+function togglePlayback() {
+    const icon = document.getElementById('playIcon');
     if(isPlaying) {
         isPlaying = false;
-        clearTimeout(schedulerInterval);
         audioCtx.suspend();
-        btn.setAttribute('data-lucide', 'play');
+        clearTimeout(timerId);
+        icon.setAttribute('data-lucide', 'play');
     } else {
         isPlaying = true;
         audioCtx.resume();
-        nextStepTime = audioCtx.currentTime;
-        audioLoop();
-        visualLoop();
-        btn.setAttribute('data-lucide', 'pause');
+        nextTime = audioCtx.currentTime;
+        playLoop();
+        drawVisuals();
+        icon.setAttribute('data-lucide', 'pause');
     }
     lucide.createIcons();
 }
 
 function updateUI() {
-    document.querySelectorAll('.pattern-block').forEach(b => b.classList.remove('active'));
-    const active = document.getElementById(`block-${blockIndex}`);
-    if(active) active.classList.add('active');
+    document.querySelectorAll('.pattern-block').forEach(el => el.classList.remove('active'));
+    document.getElementById(`blk-${block}`).classList.add('active');
 }
 
-function killEngine() { location.reload(); }
-
 /**
- * פונקציות ייצוא מאסטר מתוקנות
+ * פונקציות ייצוא מאסטר מתוקנות לחלוטין
  */
-async function exportMasterWav() {
-    if(!currentSong) return;
+async function exportMaster() {
+    if(!currentSongData) return;
     const overlay = document.getElementById('loadingOverlay');
     overlay.style.display = 'flex';
-    document.getElementById('loadStepText').innerText = "מבצע רינדור מאסטר סופי...";
-    
+    document.getElementById('loadText').innerText = "מבצע רינדור מאסטר ל-WAV...";
+
     const sampleRate = 44100;
-    const duration = currentSong.structure.length * (60/currentBpm) * 4;
-    const offCtx = new OfflineAudioContext(2, Math.max(1, sampleRate * duration), sampleRate);
+    const duration = currentSongData.structure.length * 4 * (60 / currentBpm);
+    const offCtx = new OfflineAudioContext(2, sampleRate * duration, sampleRate);
     const offMaster = offCtx.createGain();
     offMaster.connect(offCtx.destination);
 
-    let time = 0;
-    const stepT = 60 / currentBpm / 4;
-    currentSong.structure.forEach(block => {
+    let t = 0;
+    const sLen = 60 / currentBpm / 4;
+
+    currentSongData.structure.forEach(block => {
         for(let s=0; s<16; s++) {
-            if(block.kick && block.kick[s]) triggerDrum('kick', 150, 0.4, time, offCtx, offMaster);
-            if(block.snare && block.snare[s]) triggerDrum('snare', 400, 0.2, time, offCtx, offMaster);
-            if(block.hihat && block.hihat[s]) triggerDrum('hihat', 8000, 0.05, time, offCtx, offMaster);
-            if(block.clap && block.clap[s]) triggerDrum('clap', 600, 0.15, time, offCtx, offMaster);
-            
-            INSTRUMENT_MAP.slice(4).forEach(inst => {
-                if(block[inst.id] && block[inst.id][s] > 0) {
-                    triggerSynth(inst.id, midiToFreq(block[inst.id][s]), time, 0.3, offCtx, offMaster);
-                }
-            });
-            time += stepT;
+            if(block.kick && block.kick[s]) triggerDrum('kick', 120, 0.4, t, offCtx, offMaster);
+            if(block.snare && block.snare[s]) triggerDrum('snare', 400, 0.2, t, offCtx, offMaster);
+            if(block.hihat && block.hihat[s]) triggerDrum('hihat', 8000, 0.05, t, offCtx, offMaster);
+            if(block.bass && block.bass[s]) triggerSynth('bass', m2f(block.bass[s]), 0.4, t, offCtx, offMaster);
+            if(block.lead && block.lead[s]) triggerSynth('lead', m2f(block.lead[s]), 0.3, t, offCtx, offMaster);
+            t += sLen;
         }
     });
 
     try {
-        const buffer = await offCtx.startRendering();
-        const wavBlob = bufferToWav(buffer);
+        const renderedBuffer = await offCtx.startRendering();
+        const wavBlob = createWavBlob(renderedBuffer);
         const url = URL.createObjectURL(wavBlob);
         const a = document.createElement('a');
         a.href = url;
         a.download = `BEAST_MASTER_${Date.now()}.wav`;
         a.click();
-        logToConsole("הקובץ יוצא בהצלחה.");
+        addLog("הקובץ יוצא בהצלחה!");
     } catch(err) {
-        logToConsole(`שגיאת ייצוא: ${err.message}`);
+        addLog("שגיאה בייצוא: " + err.message);
     } finally {
         overlay.style.display = 'none';
     }
 }
 
-// פונקציית כתיבת WAV בינארית מלאה
-function bufferToWav(abuffer) {
-    let numOfChan = abuffer.numberOfChannels,
-        length = abuffer.length * numOfChan * 2 + 44,
-        buffer = new ArrayBuffer(length), view = new DataView(buffer),
-        channels = [], i, sample, offset = 0, pos = 0;
-
-    // פונקציות עזר לכתיבת נתונים
-    const setUint16 = (data) => { view.setUint16(offset, data, true); offset += 2; };
-    const setUint32 = (data) => { view.setUint32(offset, data, true); offset += 4; };
-
-    // WAV Header
-    setUint32(0x46464952); // "RIFF"
-    setUint32(length - 8);
-    setUint32(0x45564157); // "WAVE"
-    setUint32(0x20746d66); // "fmt "
-    setUint32(16);
-    setUint16(1); // PCM
-    setUint16(numOfChan);
-    setUint32(abuffer.sampleRate);
-    setUint32(abuffer.sampleRate * 2 * numOfChan);
-    setUint16(numOfChan * 2);
-    setUint16(16); // 16-bit
-    setUint32(0x61746164); // "data"
-    setUint32(length - offset - 4);
-
-    // כתיבת דאטה
-    for(i = 0; i < abuffer.numberOfChannels; i++) channels.push(abuffer.getChannelData(i));
-    while(pos < abuffer.length) {
-        for(i = 0; i < numOfChan; i++) {
-            sample = Math.max(-1, Math.min(1, channels[i][pos]));
-            sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
-            view.setInt16(offset, sample, true); offset += 2;
+// פונקציית העזר לכתיבת WAV - מוגדרת בצורה גלובלית למניעת שגיאת scope
+function createWavBlob(audioBuffer) {
+    const numChannels = audioBuffer.numberOfChannels;
+    const sampleRate = audioBuffer.sampleRate;
+    const format = 1; // PCM
+    const bitDepth = 16;
+    
+    const bytesPerSample = bitDepth / 8;
+    const blockAlign = numChannels * bytesPerSample;
+    
+    const buffer = new ArrayBuffer(44 + audioBuffer.length * blockAlign);
+    const view = new DataView(buffer);
+    
+    // פונקציות כתיבה מקומיות
+    const writeString = (offset, string) => {
+        for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
         }
-        pos++;
+    };
+
+    writeString(0, 'RIFF');
+    view.setUint32(4, 36 + audioBuffer.length * blockAlign, true);
+    writeString(8, 'WAVE');
+    writeString(12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, format, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, sampleRate * blockAlign, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bitDepth, true);
+    writeString(36, 'data');
+    view.setUint32(40, audioBuffer.length * blockAlign, true);
+
+    const offset = 44;
+    const channelData = [];
+    for(let i=0; i<numChannels; i++) channelData.push(audioBuffer.getChannelData(i));
+    
+    let index = 0;
+    for(let i=0; i<audioBuffer.length; i++) {
+        for(let channel=0; channel<numChannels; channel++) {
+            let sample = channelData[channel][i];
+            sample = Math.max(-1, Math.min(1, sample));
+            sample = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+            view.setInt16(offset + index, sample, true);
+            index += 2;
+        }
     }
-    return new Blob([buffer], {type: "audio/wav"});
+    
+    return new Blob([view], { type: 'audio/wav' });
 }
 </script>
 </body>
